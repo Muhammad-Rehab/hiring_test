@@ -10,6 +10,7 @@ class GetItemCubit extends Cubit<GetItemState> {
 
   GetItemCubit({required this.getItemRepository}) : super(InitialGetItemState());
 
+  List<ItemModel> items  = [];
   Future<void> getItems() async {
     emit(LoadingItemsState());
     final Either<Exception, List<ItemModel>> response = await getItemRepository.getItems();
@@ -19,17 +20,17 @@ class GetItemCubit extends Cubit<GetItemState> {
           ErrorHandler.handle(error);
           return ErrorItemState(errorModel: ErrorHandler.errorModel);
         },
-        (items) {
-          print(items);
-          return LoadedItemState(items: items);
+        (itemsModel) {
+          items = itemsModel ;
+          return LoadedItemState(items: itemsModel);
         },
       ),
     );
   }
 
-  Future<void> getItemsInfo(String url, int id) async {
+  Future<void> getItemsInfo(String url) async {
     emit(LoadingItemInfoState());
-    final response = await getItemRepository.getItemInfo(url, id);
+    final response = await getItemRepository.getItemInfo(url);
     emit(
       response.fold(
         (error) {

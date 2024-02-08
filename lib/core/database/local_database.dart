@@ -19,9 +19,8 @@ class LocalDataBase {
             await db.execute(
                 'CREATE TABLE ${AppConstants.itemsTable} ( id INTEGER PRIMARY KEY, full_name TEXT,description TEXT, url TEXT )');
             await db.execute(
-                'CREATE TABLE ${AppConstants.itemsInfoTable} ( id INTEGER PRIMARY KEY, name TEXT, watchers INTEGER,forks_count INTEGER,'
-                    'subscribers_count INTEGER, '
-                    'updated_at TEXT, created_at TEXT, description TEXT, url TEXT )'
+                'CREATE TABLE ${AppConstants.itemsInfoTable} ( id INTEGER PRIMARY KEY,description TEXT, full_name TEXT, watchers INTEGER,forks_count INTEGER,'
+                    'subscribers_count INTEGER, url TEXT, created_at TEXT, updated_at TEXT )'
             );
           });
     return database! ;

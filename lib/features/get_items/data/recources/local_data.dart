@@ -19,9 +19,9 @@ class GetItemsLocalResource {
     return items;
   }
 
-  Future<ItemInfoModel> fetchItemInfo(int id) async {
+  Future<ItemInfoModel> fetchItemInfo(String url) async {
     Database db = await openDatabase(database.path);
-    List<Map<String, dynamic>> item = await db.query(AppConstants.itemsInfoTable, where: "id = $id");
+    List<Map<String, dynamic>> item = await db.query(AppConstants.itemsInfoTable, where: "url = $url");
     await db.close();
     return ItemInfoModel.fromJson(item.first);
   }
@@ -29,8 +29,6 @@ class GetItemsLocalResource {
   insertItems(List<ItemModel> items) async {
     Database db = await openDatabase(database.path);
     for (var element in items) {
-      // await database.rawInsert('INSERT INTO ${AppConstants.itemsTable}(id, full_name, description,url) VALUES(?, ?, ?,?)',
-      //     [element.id, "${element.fistName}/${element.lastName}" ,element.description,element.url]);
       await db.insert(AppConstants.itemsTable, element.toJson(), conflictAlgorithm: ConflictAlgorithm.ignore);
     }
     await db.close();
@@ -38,7 +36,7 @@ class GetItemsLocalResource {
 
   insertItemInfo(ItemInfoModel itemInfoModel) async {
     Database db = await openDatabase(database.path);
-    await database.insert(AppConstants.itemsInfoTable, itemInfoModel.toJson(),conflictAlgorithm: ConflictAlgorithm.ignore);
+    await db.insert(AppConstants.itemsInfoTable, itemInfoModel.toJson(),conflictAlgorithm: ConflictAlgorithm.ignore);
     await db.close();
   }
 }

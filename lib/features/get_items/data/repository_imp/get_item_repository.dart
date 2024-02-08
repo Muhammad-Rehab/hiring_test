@@ -20,11 +20,8 @@ class GetItemRepository {
    try{
      final connectivityResult = await (connectivity.checkConnectivity());
      if(connectivityResult != ConnectivityResult.none){
-       print("here 0");
        List<ItemModel> items = await getItemRemoteRecourse.getItems();
-       print("here 2");
        await getItemsLocalResource.insertItems(items);
-       print("here 4");
        return Right(items);
      }else {
        return Right(await getItemsLocalResource.fetchItems());
@@ -42,15 +39,15 @@ class GetItemRepository {
    }
   }
 
-  Future<Either<Exception,ItemInfoModel>> getItemInfo(String url,int id) async {
+  Future<Either<Exception,ItemInfoModel>> getItemInfo(String url) async {
     try{
       final connectivityResult = await (connectivity.checkConnectivity());
       if(connectivityResult != ConnectivityResult.none){
         ItemInfoModel itemInfo = await getItemRemoteRecourse.getItemInfo(url);
-        getItemsLocalResource.insertItemInfo(itemInfo);
+        await getItemsLocalResource.insertItemInfo(itemInfo);
         return Right(itemInfo);
       }else {
-        return Right(await getItemsLocalResource.fetchItemInfo(id));
+        return Right(await getItemsLocalResource.fetchItemInfo(url));
       }
     } catch(exception){
       debugPrint("error : getItemRepo getItemInfo()");

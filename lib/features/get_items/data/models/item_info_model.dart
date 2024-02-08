@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class ItemInfoModel extends Equatable {
   final int id;
+  final String name ;
   final String ownerName;
   final int watchers;
   final int forks;
@@ -15,6 +16,7 @@ class ItemInfoModel extends Equatable {
   const ItemInfoModel({
     required this.id,
     required this.description,
+    required this.name,
     required this.ownerName,
     required this.watchers,
     required this.forks,
@@ -25,10 +27,12 @@ class ItemInfoModel extends Equatable {
   });
 
   factory ItemInfoModel.fromJson(Map<String, dynamic> json) {
+    List<String> name = json['full_name'].split('/');
     return ItemInfoModel(
       id: json['id'],
+      name: name.last,
+      ownerName: name.first,
       description: json['description'],
-      ownerName: json['name'],
       watchers: json['watchers'],
       forks: json['forks_count'],
       subscribers: json['subscribers_count'],
@@ -42,10 +46,10 @@ class ItemInfoModel extends Equatable {
     return {
       "id":id,
       "description":description,
-      "name": ownerName,
+      "full_name": "$ownerName/$name",
       "watchers":watchers,
-      "fork": forks,
-      "subscribers":subscribers,
+      "forks_count": forks,
+      "subscribers_count":subscribers,
       "url":url,
       "created_at":createdAt,
       "updated_at": updatedAt,

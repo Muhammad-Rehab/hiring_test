@@ -21,6 +21,6 @@ class GetItemRemoteRecourse {
 
   Future<ItemInfoModel> getItemInfo (String url) async {
     final response = await dio.get(url);
-    return ItemInfoModel.fromJson(jsonDecode(response.data));
+    return ItemInfoModel.fromJson(response.data);
   }
 }

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hiring_test/core/di/dependancy_injection.dart';
+import 'package:hiring_test/core/routing/routes.dart';
 import 'package:hiring_test/features/get_items/presentation/cubit/get_item_cubit.dart';
+import 'package:hiring_test/features/get_items/presentation/screens/item_info_screen.dart';
+import 'package:hiring_test/features/get_items/presentation/screens/items_screen.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-   initGetIt();
+  await initGetIt();
   runApp(const MyApp());
 }
 
@@ -21,58 +24,24 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          primaryColor: Colors.blue,
+          hintColor: Colors.grey,
+          shadowColor: Colors.black12,
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.blue,
+          )
         ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        routes: {
+          AppRoutes.itemScreenRoute:(context)=> const ItemsScreen(),
+          AppRoutes.itemInfoScreenRoute:(context)=> const ItemInfoScreen(),
+        },
+        initialRoute: AppRoutes.itemScreenRoute,
       ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
 
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() async{
-    await BlocProvider.of<GetItemCubit>(context).getItems();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}

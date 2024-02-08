@@ -31,7 +31,10 @@ ErrorModel _handleError(DioException error) {
       if (error.response != null &&
           error.response?.statusCode != null &&
           error.response?.statusMessage != null) {
-        return ErrorModel.fromJson(error.response!.data);
+        return ErrorModel.fromJson({
+          "message":error.response?.statusMessage,
+          "code": int.parse(error.response!.statusCode.toString())
+        });
       } else {
         return DataSource.defaultError.getFailure();
       }
@@ -49,7 +52,6 @@ ErrorModel _handleError(DioException error) {
       return DataSource.defaultError.getFailure();
     case DioExceptionType.badCertificate:
       return DataSource.defaultError.getFailure();
-    case DioExceptionType.badResponse:
-      return DataSource.defaultError.getFailure();
+
   }
 }

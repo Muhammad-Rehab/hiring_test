@@ -11,7 +11,7 @@ import 'package:sqflite/sqflite.dart';
 
 var getIt = GetIt.instance;
 
-void initGetIt() async {
+ initGetIt() async {
   // dio and local database
   Dio dio = DioFactory.getDio();
   Database database = await LocalDataBase.getDataBase();
