@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hiring_test/features/get_items/presentation/cubit/get_item_cubit.dart';
 import 'package:hiring_test/features/get_items/presentation/cubit/get_item_state.dart';
 import 'package:hiring_test/features/get_items/presentation/widgets/item_info_record.dart';
+import 'package:hiring_test/features/theme/presentation/cubit/theme_cubit.dart';
 
 class ItemInfoScreen extends StatefulWidget {
   const ItemInfoScreen({Key? key}) : super(key: key);
@@ -11,12 +12,31 @@ class ItemInfoScreen extends StatefulWidget {
   State<ItemInfoScreen> createState() => _ItemInfoScreenState();
 }
 
-class _ItemInfoScreenState extends State<ItemInfoScreen> {
+class _ItemInfoScreenState extends State<ItemInfoScreen> with WidgetsBindingObserver{
 
   String? url;
 
   getItemInfoModel() {
     BlocProvider.of<GetItemCubit>(context).getItemsInfo(url!);
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    Brightness brightness = Theme.of(context).brightness;
+    BlocProvider.of<ThemeCubit>(context).toggleTheme(brightness == Brightness.dark);
+    super.didChangePlatformBrightness();
   }
 
   @override

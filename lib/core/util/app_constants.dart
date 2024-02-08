@@ -6,5 +6,7 @@ class AppConstants {
 
   static const itemsTable = 'Item';
   static const itemsInfoTable = 'ItemInfo';
+  static const themeKey = 'isDark';
+
 
 }

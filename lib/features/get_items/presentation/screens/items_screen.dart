@@ -4,6 +4,7 @@ import 'package:hiring_test/core/routing/routes.dart';
 import 'package:hiring_test/features/get_items/data/models/item_model.dart';
 import 'package:hiring_test/features/get_items/presentation/cubit/get_item_cubit.dart';
 import 'package:hiring_test/features/get_items/presentation/cubit/get_item_state.dart';
+import 'package:hiring_test/features/theme/presentation/widgets/theme_record.dart';
 
 class ItemsScreen extends StatefulWidget {
   const ItemsScreen({Key? key}) : super(key: key);
@@ -65,6 +66,9 @@ class _ItemsScreenState extends State<ItemsScreen> {
           "GitHub Viewer",
           style: Theme.of(context).textTheme.titleLarge,
         ),
+        actions: [
+          ThemeRecord(),
+        ],
       ),
       body: Container(
         alignment: Alignment.center,
