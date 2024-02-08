@@ -18,7 +18,6 @@ class ThemeCubit extends Cubit<ThemeState> {
   Future<void> loadTheme() async {
     emit(IsLoadingThemeState());
     Either<Exception,AppThemeModel> response = await themeRepositoryImp.loadTheme();
-
    emit( response.fold((failure) {
      isDark = false ;
      return FailedThemeState();

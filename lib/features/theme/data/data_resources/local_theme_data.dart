@@ -25,12 +25,12 @@ class LocalThemeDataImp {
   }
 
   Future<AppThemeModel> toggleTheme(bool isDark) async {
-    if(appThemeModel.themeMode == ThemeMode.dark && isDark){
-      appThemeModel.themeMode = ThemeMode.light;
-      await sharedPreferences.setBool(AppConstants.themeKey, false);
-    }else{
+    if(isDark){
       appThemeModel.themeMode = ThemeMode.dark;
       await sharedPreferences.setBool(AppConstants.themeKey, true);
+    }else{
+      appThemeModel.themeMode = ThemeMode.light;
+      await sharedPreferences.setBool(AppConstants.themeKey, false);
     }
     return appThemeModel ;
   }

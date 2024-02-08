@@ -4,6 +4,7 @@ import 'package:hiring_test/core/routing/routes.dart';
 import 'package:hiring_test/features/get_items/data/models/item_model.dart';
 import 'package:hiring_test/features/get_items/presentation/cubit/get_item_cubit.dart';
 import 'package:hiring_test/features/get_items/presentation/cubit/get_item_state.dart';
+import 'package:hiring_test/features/theme/presentation/cubit/theme_cubit.dart';
 import 'package:hiring_test/features/theme/presentation/widgets/theme_record.dart';
 
 class ItemsScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class ItemsScreen extends StatefulWidget {
   State<ItemsScreen> createState() => _ItemsScreenState();
 }
 
-class _ItemsScreenState extends State<ItemsScreen> {
+class _ItemsScreenState extends State<ItemsScreen>  with WidgetsBindingObserver{
   List<ItemModel> items = [];
   List<ItemModel> filteredItems = [];
   bool isFiltered = false;
@@ -22,6 +23,9 @@ class _ItemsScreenState extends State<ItemsScreen> {
 
   getItems() {
     BlocProvider.of<GetItemCubit>(context).getItems();
+  }
+  loadTheme(){
+    BlocProvider.of<ThemeCubit>(context).loadTheme();
   }
 
   filterItems(String query) {
@@ -49,11 +53,23 @@ class _ItemsScreenState extends State<ItemsScreen> {
         fetchMoreItems();
       }
     });
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
   @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+
+    // Get the brightness.
+    var brightness = View.of(context).platformDispatcher.platformBrightness;
+    BlocProvider.of<ThemeCubit>(context).toggleTheme(brightness == Brightness.dark);
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
     scrollController.dispose();
     super.dispose();
   }
@@ -66,8 +82,8 @@ class _ItemsScreenState extends State<ItemsScreen> {
           "GitHub Viewer",
           style: Theme.of(context).textTheme.titleLarge,
         ),
-        actions: [
-          ThemeRecord(),
+        actions: const[
+           ThemeRecord(),
         ],
       ),
       body: Container(
